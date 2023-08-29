@@ -40,7 +40,7 @@ app.post("/podcasts", function (req, res){
 
 });
 
-// Read By Id -> [GET] /herois/:id
+// Read By Id -> [GET] /podcasts/:id
 app.get("/podcasts/:id", function (req, res){
     // Pegando o parâmetro de rota ID
     const id = req.params.id - 1;
@@ -52,7 +52,7 @@ app.get("/podcasts/:id", function (req, res){
     res.send(item);
 });
 
-// Update -> [PUT] /herois/:id
+// Update -> [PUT] /podcasts/:id
 app.put("/podcasts/:id", function (req, res){
     // Pegando o parâmetro de rota ID
     const id = req.params.id - 1;
@@ -66,6 +66,16 @@ app.put("/podcasts/:id", function (req, res){
     res.send("Item editado com sucesso!");
 })
 
+// Delete -> [DELETE] /podcasts/:id
+app.delete("/podcasts/:id", function (req, res){
+    // Pegando o parâmetro de rota ID
+    const id = req.params.id - 1;
+
+    // Excluindo o item da lista
+    delete lista[id];
+
+    res.send("Item excluído com sucesso!");
+});
 
 // Aplicação ouvindo na porta 3000
 app.listen(3000)
