@@ -52,6 +52,19 @@ app.get("/podcasts/:id", function (req, res){
     res.send(item);
 });
 
+// Update -> [PUT] /herois/:id
+app.put("/podcasts/:id", function (req, res){
+    // Pegando o parâmetro de rota ID
+    const id = req.params.id - 1;
+
+    // Extraindo o nome do Body da Request (Corpo da Requisição)
+    const item = req.body.nome;
+
+    // Atualizando a informação na lista de registros
+    lista[id] = item;
+
+    res.send("Item editado com sucesso!");
+})
 
 
 // Aplicação ouvindo na porta 3000
