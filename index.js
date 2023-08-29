@@ -29,16 +29,30 @@ app.get("/podcasts", function(req, res){
 app.post("/podcasts", function (req, res){
     //console.log(req.body, typeof req.body);
     
-    // Extrai o nome do Body da Request (Corpo da Requisição)
+    // Extraindo o nome do Body da Request (Corpo da Requisição)
     const item = req.body.nome;
 
-    // Inserir o item na lista
+    // Inserindo o item na lista
     lista.push(item);
 
-    // Enviamos uma resposta de sucesso
+    // Enviando uma resposta de sucesso
     res.send("Item criado com sucesso");
 
 });
+
+// Read By Id -> [GET] /herois/:id
+app.get("/podcasts/:id", function (req, res){
+    // Pegando o parâmetro de rota ID
+    const id = req.params.id - 1;
+
+    // Pegando a informação da lista
+    const item = lista[id];
+
+    // Exibindo o item na resposta do endpoint
+    res.send(item);
+});
+
+
 
 // Aplicação ouvindo na porta 3000
 app.listen(3000)
