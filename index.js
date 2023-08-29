@@ -22,7 +22,7 @@ const lista = ["DevPira", "Hipsters.Tech", "Nerdcast"];
 
 // Read All -> [GET] /podcasts
 app.get("/podcasts", function(req, res){
-    res.send(lista);
+    res.send(lista.filter(Boolean));
 });
 
 // Create -> [POST] /podcasts
