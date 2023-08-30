@@ -66,7 +66,7 @@ async function main() {
         // Pegando o parâmetro de rota ID
         const id = req.params.id;
 
-        // Pegando a informação da lista
+        // Pegando a informação da collection
         const item = await collection.findOne({
             _id: new ObjectId(id)
         })
@@ -76,26 +76,29 @@ async function main() {
     });
 
     // Update -> [PUT] /podcasts/:id
-    app.put("/podcasts/:id", function (req, res){
+    app.put("/podcasts/:id", async function (req, res){
         // Pegando o parâmetro de rota ID
-        const id = req.params.id - 1;
+        const id = req.params.id;
 
         // Extraindo o nome do Body da Request (Corpo da Requisição)
-        const item = req.body.nome;
+        const item = req.body;
 
-        // Atualizando a informação na lista de registros
-        lista[id] = item;
+        // Atualizando a informação na collection
+        await collection.updateOne(
+            { _id: new ObjectId(id) },
+            { $set: item }
+        );
 
-        res.send("Item editado com sucesso!");
+        res.send(item);
     })
 
     // Delete -> [DELETE] /podcasts/:id
-    app.delete("/podcasts/:id", function (req, res){
+    app.delete("/podcasts/:id", async function (req, res){
         // Pegando o parâmetro de rota ID
-        const id = req.params.id - 1;
+        const id = req.params.id;
 
-        // Excluindo o item da lista
-        delete lista[id];
+        // Excluindo o item da collection
+        await collection.deleteOne({ _id: new ObjectId(id) })
 
         res.send("Item excluído com sucesso!");
     });
