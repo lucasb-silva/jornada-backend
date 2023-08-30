@@ -4,13 +4,14 @@
 const express = require('express');
 
 
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 
 const url = "mongodb://127.0.0.1:27017";
 const dbName = "jornada-backend-agosto-23";
 const client = new MongoClient(url);
 
 async function main() {
+    // Devido a demora na conexão utilizamos uma Promisse (async/await)
     console.info("Conectando ao banco de dados...");
     await client.connect();
     console.info("Banco de dados conectado com sucesso!");
@@ -39,34 +40,36 @@ async function main() {
 
     // Read All -> [GET] /podcasts
     app.get("/podcasts", async function(req, res){
-        
-        const itens = await collection.find().toArray();
-        
+
+        const itens = await collection.find().toArray();        
         res.send(itens);
+
     });
 
     // Create -> [POST] /podcasts
-    app.post("/podcasts", function (req, res){
+    app.post("/podcasts", async function (req, res){
         //console.log(req.body, typeof req.body);
         
         // Extraindo o nome do Body da Request (Corpo da Requisição)
-        const item = req.body.nome;
+        const item = req.body;
 
-        // Inserindo o item na lista
-        lista.push(item);
+        // Inserindo o item na collection
+        await collection.insertOne(item);        
 
         // Enviando uma resposta de sucesso
-        res.send("Item criado com sucesso");
+        res.send(item);
 
     });
 
     // Read By Id -> [GET] /podcasts/:id
-    app.get("/podcasts/:id", function (req, res){
+    app.get("/podcasts/:id", async function (req, res){
         // Pegando o parâmetro de rota ID
-        const id = req.params.id - 1;
+        const id = req.params.id;
 
         // Pegando a informação da lista
-        const item = lista[id];
+        const item = await collection.findOne({
+            _id: new ObjectId(id)
+        })
 
         // Exibindo o item na resposta do endpoint
         res.send(item);
