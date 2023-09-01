@@ -1,13 +1,22 @@
+// Importa o dotenv
+require("dotenv").config();
+
 // O mircro framework Express transforma app em servidor HTTP
 
 // Importa o express
 const express = require('express');
-
-
+// Importa o mongodb
 const { MongoClient, ObjectId } = require("mongodb");
 
-const url = "mongodb://127.0.0.1:27017";
-const dbName = "jornada-backend-agosto-23";
+
+const dbHost = process.env.DB_HOST;
+const dbPort = process.env.DB_PORT;
+const dbName = process.env.DB_NAME;
+const dbUser = process.env.DB_USER;
+const dbPassword = process.env.DB_PASSWORD;
+
+//const url = "mongodb://127.0.0.1:27017";
+const url = `mongodb+srv://${dbUser}:${dbPassword}@${dbHost}`;
 const client = new MongoClient(url);
 
 async function main() {
@@ -27,7 +36,7 @@ async function main() {
 
     // Criando o endpoint e retornando mensagem
     app.get('/', function (req, res) {
-    res.send('Hello World')
+        res.send('Hello World')
     });
 
     // Exercicio, criando novo endpoin 'oi'
